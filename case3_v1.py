@@ -60,6 +60,7 @@ def OpenChargeMap():
 def laadpaaldata():
     import streamlit as st
     import pandas as pd
+    import plotly.figure_factory as ff
     
     # Informatie over wat er te lezen is op deze pagina
     st.write("""
@@ -69,10 +70,110 @@ def laadpaaldata():
     
     laadpalen = pd.read_csv('laadpaaldata.csv')
     laadpalen.head()
-    
-    
-
     st.write(laadpalen.head())
+    
+    laadpalen_met_drop = pd.read_csv('laadpalen_met_drop.csv')
+    laadpalen_zonder_drop = pd.read_csv('laadpalen_zonder_drop.csv')
+    
+    #############################################################################################
+    # Plot verdeling laaddtijden met extremen
+    #############################################################################################
+    
+    # Het gemmidelde en de mediaan worden hier bepaald met de data met outliers
+    median_charge_zonder = laadpalen_zonder_drop['ChargeTime'].median()
+    mean_charge_zonder = laadpalen_zonder_drop['ChargeTime'].mean()
+    median_connected_zonder = laadpalen_zonder_drop['ConnectedTime'].median()
+    mean_connected_zonder = laadpalen_zonder_drop['ConnectedTime'].mean()
+    
+    # Add histogram data
+    x1 = laadpalen_zonder_drop["ChargeTime"]
+    x2 = laadpalen_zonder_drop["ConnectedTime"]
+
+    # Group data together
+    hist_data = [x1, x2]
+
+    group_labels = ["Laad tijd", "Aangesloten tijd"]
+    colors = ['#A6ACEC', '#F66095']
+
+    # Create distplot with custom bin_size
+    fig = ff.create_distplot(hist_data,
+                             group_labels,
+                             bin_size = .2,
+                             colors = colors)
+
+    fig.update_layout(title_text = "Verdeling laadtijden (met extreme tijden)",
+                     xaxis_title = "Aantal uren",
+                     yaxis_title = "Kans")
+
+    annotation1 = {"xref":"paper",
+                  "yref":"paper",
+                  "x":1.00,
+                  "y":1,
+                  "showarrow":False,
+                  "text": "Mediaan chargetime: " + str(round(median_charge_zonder,2)) + " gemiddelde chargetime: " +
+                  str(round(mean_charge_zonder,2))}
+
+    annotation2 = {"xref":"paper",
+                  "yref":"paper",
+                  "x":1.0,
+                  "y":0.9,
+                  "showarrow":False,
+                  "text": "Mediaan connectedtime: " + str(round(median_connected_zonder,2)) + " gemiddelde connectedtime: " +
+                  str(round(mean_connected_zonder,2))}
+
+    # Add an annotation and show
+    fig.update_layout({"annotations":[annotation1, annotation2]})
+    st.plotly_chart(fig)
+    
+    #############################################################################################
+    # Plot verdeling laaddtijden zonder extremen
+    #############################################################################################
+    
+    # Het gemmidelde en de mediaan worden hier bepaald met de data zonder outliers
+    median_charge = laadpalen_met_drop["ChargeTime"].median()
+    mean_charge = laadpalen_met_drop["ChargeTime"].mean()
+    median_connected = laadpalen_met_drop["ConnectedTime"].median()
+    mean_connected = laadpalen_met_drop["ConnectedTime"].mean()
+    
+    # Add histogram data
+    x1 = laadpalen_met_drop["ChargeTime"]
+    x2 = laadpalen_met_drop["ConnectedTime"]
+
+    # Group data together
+    hist_data = [x1, x2]
+
+    group_labels = ["Laad tijd", "Aangesloten tijd"]
+    colors = ["#A6ACEC", "#F66095"]
+
+    # Create distplot with custom bin_size
+    fig = ff.create_distplot(hist_data,
+                             group_labels,
+                             bin_size = .2,
+                             colors = colors)
+
+    fig.update_layout(title_text = "Verdeling laadtijden (zonder extreme tijden)",
+                     xaxis_title = "Aantal uren",
+                     yaxis_title = "Kans")
+
+    annotation1 = {"xref":"paper",
+                  "yref":"paper",
+                  "x":1.00,
+                  "y":1,
+                  "showarrow":False,
+                  "text": "Mediaan chargetime: " + str(round(median_charge,2)) + " gemiddelde chargetime: " +
+                  str(round(mean_charge,2))}
+
+    annotation2 = {"xref":"paper",
+                  "yref":"paper",
+                  "x":1.0,
+                  "y":0.9,
+                  "showarrow":False,
+                  "text": "Mediaan connectedtime: " + str(round(median_connected,2)) + " gemiddelde connectedtime: " +
+                  str(round(mean_connected,2))}
+
+    # Add an annotation and show
+    fig.update_layout({"annotations":[annotation1, annotation2]})
+    st.plotly_chart(fig)
     
 
 
@@ -205,13 +306,14 @@ def rdw_data():
     ######################################################################################
     # Regressiemodel met 2 losse plotjes
     ######################################################################################
-#      st.write("""
-#          ## Regressie tussen emissiecode en cilinder inhoud
-#          De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
-#          de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
-#          In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
-#          de uitstoot van de auto en de cilinder inhoud. In deze diagram zijn de elektrische auto's en waterstof 
-#          auto's uit de dataset gehaald. Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
+    
+    st.write("""
+        ## Regressie tussen emissiecode en cilinder inhoud
+        De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
+        de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
+        In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
+        de uitstoot van de auto en de cilinder inhoud. In deze diagram zijn de elektrische auto's en waterstof 
+        auto's uit de dataset gehaald. Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
     
     df_model = pd.read_csv("df_model.csv")
     
@@ -228,11 +330,11 @@ def rdw_data():
 
     st.plotly_chart(fig_model1)
     
-#     st.write("""
-#         ## Regressie tussen cilinders en cilinder inhoud
-#         In deze diagram is weergegeven wat de verhoudingen zijn tussen de hoeveelheid cilinders en de inhoud 
-#         van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
-#         cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
+    st.write("""
+        ## Regressie tussen cilinders en cilinder inhoud
+        In deze diagram is weergegeven wat de verhoudingen zijn tussen de hoeveelheid cilinders en de inhoud 
+        van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
+        cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
     
     
     fig_model2 = px.scatter(df_model,
@@ -250,7 +352,6 @@ def rdw_data():
     ######################################################################################
     # Regressiemodel uitvoeren
     ######################################################################################
-
     
     # Een aantal kentekens en bijbehorende waarden inladen om het model uit te kunnen voeren
     df_kenteken = pd.read_csv("df_kenteken.csv")
