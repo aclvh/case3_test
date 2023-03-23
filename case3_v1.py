@@ -133,12 +133,13 @@ def rdw_data():
     ######################################################################################
     # Plot 1 met cum aantal auto's per brandstof omschrijving
     ######################################################################################
-#     st.write("""
-#         ## Lijndiagram van het aantal auto's per type aandrijving
-#         Deze lijndiagram geeft net zoals in het cirkel diagram ook het type aandrijving weer die het meest voorkomt 
-#         in Nederland. Hierbij is een slider toegevoegd dat over de tijd heen weergeeft welke soort 
-#         aandrijving het meeste voor is gekomen. Ook hier kan uit worden opgehaald dat benzine auto's het meest
-#         dominant is in Nederland.""")
+    
+    st.write("""
+        ## Lijndiagram van het aantal auto's per type aandrijving
+        Deze lijndiagram geeft net zoals in het cirkel diagram ook het type aandrijving weer die het meest voorkomt 
+        in Nederland. Hierbij is een slider toegevoegd dat over de tijd heen weergeeft welke soort 
+        aandrijving het meeste voor is gekomen. Ook hier kan uit worden opgehaald dat benzine auto's het meest
+        dominant is in Nederland.""")
     
     df_fig1 = pd.read_csv("df_fig1.csv")
     
@@ -158,11 +159,12 @@ def rdw_data():
     ######################################################################################
     # Plot met top 10 vrekochte merken elektrische auto's
     ######################################################################################
-#     st.write("""
-#         ## Histogram van het aantal elektrische auto's voor de top 10 auto merken 
-#         Deze histogram laat de hoeveelheid geproduceerde elektrische auto's zien van auto merken. 
-#         Dit zijn de top 10 automerken die de meeste elektrische auto's hebben geproduceerd, gebasseerd op de gegeven data van RDW. 
-#         Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
+    
+    st.write("""
+        ## Histogram van het aantal elektrische auto's voor de top 10 auto merken 
+        Deze histogram laat de hoeveelheid geproduceerde elektrische auto's zien van auto merken. 
+        Dit zijn de top 10 automerken die de meeste elektrische auto's hebben geproduceerd, gebasseerd op de gegeven data van RDW. 
+        Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
     
     df_merk = pd.read_csv("df_merk.csv")
     
@@ -180,10 +182,10 @@ def rdw_data():
     ######################################################################################
     # Plot met cum aantal auto's per brandstof omschrijving
     ######################################################################################
-#     st.write("""
-#         ## Lijndiagram van verschillende auto merken
-#         In deze lijndiagram is het aantal auto's te zien van 10 auto merken die het meeste voorkomen. 
-#         Dit geeft een beeld weer welke auto merken het meest populair zijn in Nederland.""")
+    st.write("""
+        ## Lijndiagram van verschillende auto merken
+        In deze lijndiagram is het aantal auto's te zien van 10 auto merken die het meeste voorkomen. 
+        Dit geeft een beeld weer welke auto merken het meest populair zijn in Nederland.""")
     
     df_fig2 = pd.read_csv("df_fig2.csv")
     
