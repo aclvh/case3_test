@@ -60,15 +60,6 @@ def OpenChargeMap():
         """)
     
     Laadpalen = pd.read_csv("Laadpalen.csv")
-#     Locatiedata = {'Plaats':  ['Nederland','Amsterdam'],
-        
-#                     'Lon': [["53.5", "5.4"],
-#                             ["52.2", "4.66"]],
-               
-#                     'Lat' : [["50.8", "5.3"]
-#                              ["52.46", "5.10"]]}
-
-
     st.write(Laadpalen.head(3))
   
 
@@ -204,16 +195,26 @@ def OpenChargeMap():
             return "darkred"
     
     ################################################################################################################
-#     plaatsnaam = 'Amsterdam'
     
-#     lon1 = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Lon'].values
-#     lat1 = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Lat'].values
+    locatiedata = pd.DataFrame(data = {'Plaats': ['Nederland', 'Amsterdam', 'Utrecht'],
+                                       'Locatie': [1,2,3]})
 
-   #lon = ["53.5", "5.4"]
-    #lat = ["50.8", "5.3"]
+    locatiedata['Locatie'] = locatiedata['Locatie'].astype('object')
+    locatiedata.at[0, 'Locatie'] = [[50.5, 5.4],[54.2, 4.66]]
+    locatiedata.at[1, 'Locatie'] = [[52.35, 4.9],[52.4, 4.91]]
+    locatiedata.at[2, 'Locatie'] = [[52.07, 5.10],[52.11, 5.15]]
     
-    #plaatsnaam = 'Amsterdam'
-    #long_lat = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Locatie'].values
+    InvoerLocatie = st.selectbox("# Selecteer een locatie:", ("Nederland", "Amsterdam", "Utrecht"))
+    
+    long_lat = locatiedata[locatiedata['Plaats'] == InvoerLocatie]['Locatie']
+    
+    
+    if InvoerLocatie == 'Utrecht':
+        locatie = long_lat[2]
+    elif InvoerLocatie == 'Amsterdam':
+        locatie = long_lat[1]
+    else:
+        locatie = long_lat[0]
     
     m = folium.Map(tiles = 'cartodbpositron')
     
