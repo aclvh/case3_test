@@ -221,13 +221,15 @@ def rdw_data():
         van de RDW:
         1. Open-Data-RDW-Gekentekende_voertuigen
         2. Open-Data-RDW-Gekentekende_voertuigen_brandstof
+        De eerste dataset bevat meer algemene informatie over de voertuigen en de tweede bevat ook informatie over
+        de brandstofsoort. Deze twee datasets kunnen worden gecombineerd tot één dataset door ze te mergen op
+        'kenteken'.
         
         Aangezien de datasets bestaan uit respectievelijk 15.1 miljoen rijen met 92 kolommen en 14.4 miljoen rijen met
         36 kolommen kan een normale laptop dit vanwege de grootte niet inladen.
         
-        Om deze bestanden te kunnen gebruiken zijn een aantal kolommen geselecteerd die nodig waren voor specifieke
-        grafieken om de bestanden wel in te kunnen laden, aangezien de bestanden dan minder groot zijn.
-        Ook is gefilterd op enkel de voertuigsoort, 'personenauto'.
+        Om deze bestanden te kunnen gebruiken zijn een aantal kolommen geselecteerd die nodig waren voor het maken van
+        specifieke grafieken. Ook is gefilterd op enkel de voertuigsoort, 'personenauto'.
         Op deze manier kunnen de benodigde kolommen en rijen van de datasets wel ingeladen en samengevoegd worden.
         Vervolgens wordt het samengevoegde bestand omgezet naar een csv bestand, zodat werken met de dataset sneller
         gaat.""")
@@ -238,7 +240,7 @@ def rdw_data():
     
     st.write("""
         ## Cirkel diagram van het type aandrijving
-        Deze cirkel diagram laat zien welke soort aandrijving het meest is voorgekomen. 
+        Deze cirkel diagram laat zien welke soort aandrijving het meest voorkomt. 
         Zo is te zien dat benzine aangedreven auto's het meeste voorkomen over de jaren heen. 
         Hierop volgen de elektrisch auto's en de diesel auto's. Verder is te zien dat er nog een aantal kleine groepen 
         zijn met een ander type krachtbron die in kleine hoeveelheden voorkomen.""")
@@ -261,10 +263,11 @@ def rdw_data():
     
     st.write("""
         ## Lijndiagram van het aantal auto's per type aandrijving
-        Deze lijndiagram geeft net zoals in het cirkel diagram ook het type aandrijving weer die het meest voorkomt 
+        Deze lijndiagram geeft net zoals het cirkel diagram ook het type aandrijving weer die het meest voorkomt 
         in Nederland. Hierbij is een slider toegevoegd dat over de tijd heen weergeeft welke soort 
         aandrijving het meeste voor is gekomen. Ook hier kan uit worden opgehaald dat benzine auto's het meest
-        dominant is in Nederland.""")
+        dominant is in Nederland. Wel kan men zien dat de hoeveelheid elektrische auto's sterk aan het 
+        toenemen zijn sinds ongeveer 2018.""")
     
     df_fig1 = pd.read_csv("df_fig1.csv")
     
@@ -288,8 +291,8 @@ def rdw_data():
     st.write("""
         ## Histogram van het aantal elektrische auto's voor de top 10 auto merken 
         Deze histogram laat de hoeveelheid geproduceerde elektrische auto's zien van auto merken. 
-        Dit zijn de top 10 automerken die de meeste elektrische auto's hebben geproduceerd, gebasseerd op de gegeven data van RDW. 
-        Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
+        Dit zijn de top 10 automerken die de meeste elektrische auto's hebben verkocht, gebasseerd op de gegeven data
+        van RDW. Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
     
     df_merk = pd.read_csv("df_merk.csv")
     
@@ -309,8 +312,10 @@ def rdw_data():
     ######################################################################################
     st.write("""
         ## Lijndiagram van verschillende auto merken
-        In deze lijndiagram is het aantal auto's te zien van 10 auto merken die het meeste voorkomen. 
-        Dit geeft een beeld weer welke auto merken het meest populair zijn in Nederland.""")
+        In deze lijndiagram is het cumulatieve aantal verkochte auto's te zien van 10 auto merken die de meeste elektrische
+        auto's hebben verkocht tot nu toe. Dit geeft een beeld weer welke auto merken het meest populair zijn
+        in Nederland. Wat opvalt is dat het merk Tesla in vergelijking met andere merken nog niet lang elektrische
+        auto's verkoopt in Nederland, maar dat deze toch in de top 10 staat.""")
     
     df_fig2 = pd.read_csv("df_fig2.csv")
     
@@ -336,9 +341,11 @@ def rdw_data():
         ### Regressie tussen emissiecode en cilinder inhoud
         De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
         de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
-        In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
-        de uitstoot van de auto en de cilinder inhoud. In deze diagram zijn de elektrische auto's en waterstof 
-        auto's uit de dataset gehaald. Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
+        Meer verbruik van brandstof zou resulteren in een lagere emissiecode.
+        In de diagram is ook een positieve regressielijn te zien (echter is dit verband niet heel sterk).
+        Dit geeft aan dat er dus een verband is tussen de uitstoot van de auto en de cilinder inhoud.
+        In deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.
+        Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
     
     df_model = pd.read_csv("df_model.csv")
     
@@ -361,7 +368,6 @@ def rdw_data():
         van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
         cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
     
-    
     fig_model2 = px.scatter(df_model,
                         x = "aantal_cilinders",
                         y = "cilinderinhoud",
@@ -378,6 +384,12 @@ def rdw_data():
     # Regressiemodel uitvoeren
     ######################################################################################
     
+    st.write("""
+        ### Regressiemodel
+        Met behulp van de relatie tussen aantal cilinders, cilinderinhoud en de emissiecode is een regressiemodel
+        opgesteld. Wanneer men hieronder een kenteken invoerd, worden het aantal cilinders en de emissiecode van de
+        bijbehorende auto opgezocht in de dataset. Hieruit volgt een voorspelde cilinderinhoud.""")
+    
     # Een aantal kentekens en bijbehorende waarden inladen om het model uit te kunnen voeren
     df_kenteken = pd.read_csv("df_kenteken.csv")
 
@@ -386,8 +398,8 @@ def rdw_data():
     st.write(deel_df_kenteken.head(10))
     
     # Kenteken invoeren
-    kenteken = st.text_input("Kenteken", "0050PK")
-    st.write("Het ingevoerde kenteken is: ", kenteken)
+    kenteken = st.text_input("Voer een kenteken in:", "0050PK")
+#     st.write("Het ingevoerde kenteken is: ", kenteken)
     
     # Het model
     X = df_model[["emissiecode_omschrijving","aantal_cilinders"]]
