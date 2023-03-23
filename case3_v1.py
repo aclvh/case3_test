@@ -332,7 +332,8 @@ def rdw_data():
     ######################################################################################
     
     st.write("""
-        ## Regressie tussen emissiecode en cilinder inhoud
+        ## Lineaire regressie model
+        ### Regressie tussen emissiecode en cilinder inhoud
         De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
         de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
         In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
@@ -355,7 +356,7 @@ def rdw_data():
     st.plotly_chart(fig_model1)
     
     st.write("""
-        ## Regressie tussen cilinders en cilinder inhoud
+        ### Regressie tussen cilinders en cilinder inhoud
         In deze diagram is weergegeven wat de verhoudingen zijn tussen de hoeveelheid cilinders en de inhoud 
         van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
         cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
@@ -397,7 +398,7 @@ def rdw_data():
     emissiecode = float(rij_kenteken.iloc[0]["emissiecode_omschrijving"])
     aantal_cilinders = rij_kenteken.iloc[0]["aantal_cilinders"]
     
-    voorspelling_cilinderinhoud = reg.predict(np.array([[emissiecode, aantal_cilinders]]))[0]
+    voorspelling_cilinderinhoud = round(reg.predict(np.array([[emissiecode, aantal_cilinders]]))[0],0)
     echte_cilinderinhoud = rij_kenteken.iloc[0]["cilinderinhoud"]
     
     # Voorspelling
@@ -409,7 +410,7 @@ def rdw_data():
     reg_cil = reg.coef_[1]
     intercept = reg.intercept_
     
-    st.write("### Extra informatie over het regressiemodel")
+    st.write("#### Extra informatie over het regressiemodel")
     st.write("Het model heeft een regressiescore", regressiescore, "en bevat de volgende parameters:")
     st.write("* De regressiecoëfficiënt van 'emissiecode_omschijving' is:", reg_emissie)
     st.write("* De regressiecoëfficiënt van 'aantal_cilinders' is:", reg_cil)
