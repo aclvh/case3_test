@@ -40,6 +40,9 @@ def OpenChargeMap():
     import streamlit as st
     import pandas as pd
     import requests
+    from streamlit_folium import st_folium
+    import folium
+
     
     # Informatie over wat er te lezen is op deze pagina
     st.write("""
@@ -48,9 +51,208 @@ def OpenChargeMap():
         met behulp van de OpenChargeMap.""")
     
     Laadpalen = pd.read_csv("Laadpalen.csv")
-    Laadpalen.head()
+    Locatiedata = {'Plaats': ['Nederland',
+                   'Amsterdam',
+                   'Maastricht',
+                   'Haarlem',
+                   'Arnhem',
+                   'Utrecht',
+                   'Leeuwarden',
+                   'Groningen',
+                   'Den Haag',
+                   'Middelburg',
+                   'Zwolle',
+                   'Den Bosch',
+                   'Assen',
+                   'Lelystad'],
+        
+            'Lon': ['52.15130368472897',
+                    '52.371258078794135',
+                    '50.85300767449641',
+                    '52.386845554591645',
+                    '51.98338138653844',
+                    '52.09037942657452',
+                    '53.201233006887016',
+                    '53.218657498787515',
+                    '52.07175202820417',
+                    '51.49981853843821',
+                    '52.51607891882432',
+                    '51.6992652579386',
+                    '52.99242186078035',
+                    '52.51709903811563'],
+               
+            'Lat' : ['5.849065006968685',
+                    '4.912201662823863',
+                    '5.687171406171752',
+                    '4.639415458023007',
+                    '5.898966059104855',
+                    '5.125935086923146',
+                    '5.79944975573854',
+                    '6.571457904196551',
+                    '4.299396831574714',
+                    '3.615749790361903',
+                    '6.0891464381897045',
+                    '5.296904176783719',
+                    '6.564924557157714',
+                    '5.462285327853063'
+                    ]}
+
 
     st.write(Laadpalen.head(3))
+  
+    ####################################################################################################################
+
+    def add_categorical_legend(folium_map, title, colors, labels):
+        if len(colors) != len(labels):
+            raise ValueError("colors and labels must have the same length.")
+
+        color_by_label = dict(zip(labels, colors))
+        
+        legend_categories = ""     
+        for label, color in color_by_label.items():
+            legend_categories += f"<li><span style='background:{color}'></span>{label}</li>"
+        
+        legend_html = f"""
+        <div id='maplegend' class='maplegend'>
+          <div class='legend-title'>{title}</div>
+          <div class='legend-scale'>
+            <ul class='legend-labels'>
+            {legend_categories}
+            </ul>
+          </div>
+        </div>
+        """
+        script = f"""
+            <script type="text/javascript">
+            var oneTimeExecution = (function() {{
+                        var executed = false;
+                        return function() {{
+                            if (!executed) {{
+                                 var checkExist = setInterval(function() {{
+                                           if ((document.getElementsByClassName('leaflet-top leaflet-right').length) || (!executed)) {{
+                                              document.getElementsByClassName('leaflet-top leaflet-right')[0].style.display = "flex"
+                                              document.getElementsByClassName('leaflet-top leaflet-right')[0].style.flexDirection = "column"
+                                              document.getElementsByClassName('leaflet-top leaflet-right')[0].innerHTML += `{legend_html}`;
+                                              clearInterval(checkExist);
+                                              executed = true;
+                                           }}
+                                        }}, 100);
+                            }}
+                        }};
+                    }})();
+                oneTimeExecution()
+        </script>
+          """
+   
+
+        css = """
+    
+        <style type='text/css'>
+          .maplegend {
+            z-index:9999;
+            float:right;
+            background-color: rgba(255, 255, 255, 1);
+            border-radius: 5px;
+            border: 2px solid #bbb;
+            padding: 10px;
+            font-size:12px;
+            positon: relative;
+          }
+          .maplegend .legend-title {
+            text-align: left;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 90%;
+            }
+          .maplegend .legend-scale ul {
+            margin: 0;
+            margin-bottom: 5px;
+            padding: 0;
+            float: left;
+            list-style: none;
+            }
+          .maplegend .legend-scale ul li {
+            font-size: 80%;
+            list-style: none;
+            margin-left: 0;
+            line-height: 18px;
+            margin-bottom: 2px;
+            }
+          .maplegend ul.legend-labels li span {
+            display: block;
+            float: left;
+            height: 16px;
+            width: 30px;
+            margin-right: 5px;
+            margin-left: 0;
+            border: 0px solid #ccc;
+            }
+          .maplegend .legend-source {
+            font-size: 80%;
+            color: #777;
+            clear: both;
+            }
+          .maplegend a {
+            color: #777;
+            }
+        </style>
+        """
+
+        folium_map.get_root().header.add_child(folium.Element(script + css))
+
+        return folium_map
+
+    #########################################################################################################################
+
+    def kleuren(type):
+    
+        if type > 1200:
+            return "green"
+        elif type > 1000:
+            return "lime"
+        elif type > 800:
+            return "greenyellow"
+        elif type > 600:
+            return "yellow"
+        elif type > 400:
+            return "darkorange"
+        elif type > 200:
+            return "red"
+        else:
+            return "darkred"
+    
+    ################################################################################################################
+    plaatsnaam = 'Amsterdam'
+    
+    lon = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Lon'].values
+    lat = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Lat'].values
+
+    
+    #plaatsnaam = 'Amsterdam'
+    #long_lat = Locatiedata[Locatiedata['Plaats'] == plaatsnaam]['Locatie'].values
+    
+    m = folium.Map(tiles = 'cartodbpositron',
+                  location = ([lon,lat]))
+    
+
+    for index, row in Laadpalen.iterrows():
+    
+        color_circle = kleuren(row['Aantal_Laadpalen'])
+        marker=(folium.CircleMarker(location =[row['AddressInfo.Latitude'], row['AddressInfo.Longitude']],
+                                    popup = row["Postcode_Groep"],
+                                    radius = 1,
+                                    color = color_circle))
+        marker.add_to(m)
+    
+
+    m = add_categorical_legend(m,
+                               'Aantal laadpalen per postcode groep',
+                               colors = ['green', 'lime', 'greenyellow', 'yellow', 'darkorange',
+                                         'red', 'darkred'],
+                               labels = ['> 1200', '> 1000', '> 800', '> 600', '> 400',
+                                         '> 200', '0-200'])
+
+    st_data = st_folium(m, width = 725)
     
 
 
