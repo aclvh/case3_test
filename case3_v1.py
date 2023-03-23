@@ -79,6 +79,20 @@ def laadpaaldata():
     # Plot verdeling laaddtijden met extremen
     #############################################################################################
     
+    st.write("""
+        ## Verdeling laadttijden elektrische auto's
+        Op deze pagina is te zien wat de verdelingis van de laadtijden van elektrische auto's en hoe lang de auto's
+        aangesloten zijn geweest op de laadpaal.""")
+    
+    st.write("""
+        ### Verdeling laadtijden elektrische auto's met extremen
+        Hieronder staat een histogram die de verdeling weergeeft van de laadtijd en aangesloten tijd van auto's
+        op laadpalen. Ook is de kansdichtheidsfunctie weergegeven.
+        Hierbij is te zien dat er een paar extreme waarden zijn waardoor de verdeling minder duidelijk is voor de meeste
+        auto's die over het algemeen minder lang aangesloten zijn op de laadpalen. Dit kan men ook concluderen uit de
+        waarden van de gemiddelden en medianen.
+        """)
+    
     # Het gemmidelde en de mediaan worden hier bepaald met de data met outliers
     median_charge_zonder = laadpalen_zonder_drop['ChargeTime'].median()
     mean_charge_zonder = laadpalen_zonder_drop['ChargeTime'].mean()
@@ -128,6 +142,16 @@ def laadpaaldata():
     #############################################################################################
     # Plot verdeling laaddtijden zonder extremen
     #############################################################################################
+    
+    st.write("""
+        ### Verdeling laadtijden elektrische auto's met extremen
+        Hieronder wordt dezelfde figuur getoond, die de procentuele dichtheid van de totale hoeveelheid opgeladen auto's
+        weergeeft. Daarnaast is te zien hoelang de gemiddelde auto erover doet om op te laden. Ook is te zien
+        hoe lang auto's gemiddeld aangesloten zijn op een laadpaal.
+        Uit de kansdichtheid van de laadtijd blijkt dat de meeste auto's binnen 8 uur zijn opgeladen.
+        Echter laat de spreiding van de aangesloten tijd zien dat mensen hun auto niet direct loskoppelen. 
+        Na het verwijderen van de extreme aangesloten tijden aan laadpalen is te zien dat zowel de mediaan als
+        het gemiddelde zijn veranderd.""")
     
     # Het gemmidelde en de mediaan worden hier bepaald met de data zonder outliers
     median_charge = laadpalen_met_drop["ChargeTime"].median()
@@ -378,7 +402,6 @@ def rdw_data():
     
     # Voorspelling
     st.write("De voorspelde cilinderinhoud is:", voorspelling_cilinderinhoud)
-    st.write("De echte cilinderinhoud is:", echte_cilinderinhoud)
     
     # Uitleg model
     regressiescore = reg.score(X.values, y.values)
@@ -386,7 +409,7 @@ def rdw_data():
     reg_cil = reg.coef_[1]
     intercept = reg.intercept_
     
-    st.write("## Extra informatie over het regressiemodel")
+    st.write("### Extra informatie over het regressiemodel")
     st.write("Het model heeft een regressiescore", regressiescore, "en bevat de volgende parameters:")
     st.write("* De regressiecoëfficiënt van 'emissiecode_omschijving' is:", reg_emissie)
     st.write("* De regressiecoëfficiënt van 'aantal_cilinders' is:", reg_cil)
