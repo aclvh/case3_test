@@ -220,7 +220,6 @@ def OpenChargeMap():
     
     m.fit_bounds(locatie)
     
-
     for index, row in Laadpalen.iterrows():
     
         color_circle = kleuren(row['Aantal_Laadpalen'])
@@ -231,12 +230,10 @@ def OpenChargeMap():
         marker.add_to(m)
     
 
-        m = add_categorical_legend(m,
+    m = add_categorical_legend(m,
                                'Aantal laadpalen per postcode groep',
-                               colors = ['green', 'lime', 'greenyellow', 'yellow', 'darkorange',
-                                         'red', 'darkred'],
-                               labels = ['> 1200', '> 1000', '> 800', '> 600', '> 400',
-                                         '> 200', '0-200'])
+                               colors = ['green', 'lime', 'greenyellow', 'yellow', 'darkorange','red', 'darkred'],
+                               labels = ['> 1200', '> 1000', '> 800', '> 600', '> 400', '> 200', '0-200'])
 
     st_data = st_folium(m, width = 725)
     
