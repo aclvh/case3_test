@@ -218,7 +218,7 @@ def OpenChargeMap():
     
     m = folium.Map(tiles = 'cartodbpositron')
     
-    m.fit_bounds([[53.5, 5.4], [50.8, 5.3]])
+    m.fit_bounds(locatie)
     
 
     for index, row in Laadpalen.iterrows():
