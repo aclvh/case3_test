@@ -111,11 +111,12 @@ def rdw_data():
     # Plot crikeldiagram brandstof omschrijving
     ######################################################################################
     
-    st.write("""##Cirkel diagram van het type aandrijving
-    Deze cirkel diagram laat zien welke soort aandrijving het meest is voorgekomen. 
-    Zo is te zien dat benzine aangedreven auto's het meeste voorkomen over de jaren heen. 
-    Hierop volgen de elektrisch auto's en de diesel auto's. Verder is te zien dat er nog een aantal kleine groepen 
-    zijn met een ander type krachtbron die in kleine hoeveelheden voorkomen.""")
+    st.write("""
+        ## Cirkel diagram van het type aandrijving
+        Deze cirkel diagram laat zien welke soort aandrijving het meest is voorgekomen. 
+        Zo is te zien dat benzine aangedreven auto's het meeste voorkomen over de jaren heen. 
+        Hierop volgen de elektrisch auto's en de diesel auto's. Verder is te zien dat er nog een aantal kleine groepen 
+        zijn met een ander type krachtbron die in kleine hoeveelheden voorkomen.""")
     
     df_cirkel = pd.read_csv('df_cirkel.csv')
     
@@ -132,10 +133,12 @@ def rdw_data():
     ######################################################################################
     # Plot 1 met cum aantal auto's per brandstof omschrijving
     ######################################################################################
-    st.write("""##Lijndiagram van het aantal auto's per type aandrijving
-    Deze lijndiagram geeft net zoals in het cirkel diagram ook het type aandrijving weer die 
-    het meest voorkomt in Nederland. Hierbij is een slider toegevoegd dat over de tijd heen weergeeft welke soort aandrijving 
-    het meeste voor is gekomen. Ook hier kan uit worden opgehaald dat benzine auto's het meest dominant is in Nederland.""")
+    st.write("""
+        ## Lijndiagram van het aantal auto's per type aandrijving
+        Deze lijndiagram geeft net zoals in het cirkel diagram ook het type aandrijving weer die het meest voorkomt 
+        in Nederland. Hierbij is een slider toegevoegd dat over de tijd heen weergeeft welke soort 
+        aandrijving het meeste voor is gekomen. Ook hier kan uit worden opgehaald dat benzine auto's het meest
+        dominant is in Nederland.""")
     
     df_fig1 = pd.read_csv("df_fig1.csv")
     
@@ -155,10 +158,11 @@ def rdw_data():
     ######################################################################################
     # Plot met top 10 vrekochte merken elektrische auto's
     ######################################################################################
-    st.write("""##Histogram van het aantal elektrische auto's voor de top 10 auto merken 
-    Deze histogram laat de hoeveelheid geproduceerde elektrische auto's zien van auto merken. 
-    Dit zijn de top 10 automerken die de meeste elektrische auto's hebben geproduceerd, gebasseerd op de gegeven data van RDW. 
-    Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
+    st.write("""
+        ## Histogram van het aantal elektrische auto's voor de top 10 auto merken 
+        Deze histogram laat de hoeveelheid geproduceerde elektrische auto's zien van auto merken. 
+        Dit zijn de top 10 automerken die de meeste elektrische auto's hebben geproduceerd, gebasseerd op de gegeven data van RDW. 
+        Zo is te zien dat Toyota een groter deel uit maakt van de totale hoeveelheid elektrische auto's.""")
     
     df_merk = pd.read_csv("df_merk.csv")
     
@@ -176,9 +180,10 @@ def rdw_data():
     ######################################################################################
     # Plot met cum aantal auto's per brandstof omschrijving
     ######################################################################################
-    st.write("""##Lijndiagram van verschillende auto merken
-    In deze lijndiagram is het aantal auto's te zien van 10 auto merken die het meeste voorkomen. 
-    Dit geeft een beeld weer welke auto merken het meest populair zijn in Nederland.""")
+    st.write("""
+        ## Lijndiagram van verschillende auto merken
+        In deze lijndiagram is het aantal auto's te zien van 10 auto merken die het meeste voorkomen. 
+        Dit geeft een beeld weer welke auto merken het meest populair zijn in Nederland.""")
     
     df_fig2 = pd.read_csv("df_fig2.csv")
     
@@ -198,12 +203,13 @@ def rdw_data():
     ######################################################################################
     # Regressiemodel met 2 losse plotjes
     ######################################################################################
-     st.write("""##Regressie tussen emissiecode en cilinder inhoud
-     De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
-     de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
-     In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
-     de uitstoot van de auto en de cilinder inhoud. In deze diagram zijn de elektrische auto's en waterstof 
-     auto's uit de dataset gehaald. Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
+     st.write("""
+         ## Regressie tussen emissiecode en cilinder inhoud
+         De regressie tussen de emissiecode en de cilinderinhoud is een verband die is bedacht vanwege 
+         de gedachte dat een grotere inhoud van de cilinders zou resulteren naar meer verbruik van brandstof. 
+         In de diagram is ook een positieve regressielijn te zien. Dit geeft aan dat er dus een verband is tussen 
+         de uitstoot van de auto en de cilinder inhoud. In deze diagram zijn de elektrische auto's en waterstof 
+         auto's uit de dataset gehaald. Dit omdat elektrische en waterstof auto's niet aangedreven worden met cilinders.""")
     
     df_model = pd.read_csv("df_model.csv")
     
@@ -220,10 +226,11 @@ def rdw_data():
 
     st.plotly_chart(fig_model1)
     
-    st.write("""##Regressie tussen cilinders en cilinder inhoud 
-    In deze diagram is weergegeven wat de verhoudingen zijn tussen de hoeveelheid cilinders en de inhoud 
-    van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
-    cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
+    st.write("""
+        ## Regressie tussen cilinders en cilinder inhoud
+        In deze diagram is weergegeven wat de verhoudingen zijn tussen de hoeveelheid cilinders en de inhoud 
+        van alle cilinders. Er is een verband te zien waarin de cilinderinhoud vergroot met de hoeveelheid 
+        cilinders. Ook voor deze diagram zijn de elektrische auto's en waterstof auto's uit de dataset gehaald.""")    
     
     
     fig_model2 = px.scatter(df_model,
