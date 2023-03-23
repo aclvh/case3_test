@@ -69,6 +69,8 @@ def laadpaaldata():
     
     laadpalen = pd.read_csv('laadpaaldata.csv')
     laadpalen.head()
+    
+    
 
     st.write(laadpalen.head())
     
@@ -104,19 +106,17 @@ def rdw_data():
         Op deze manier kunnen de benodigde kolommen en rijen van de datasets wel ingeladen en samengevoegd worden.
         Vervolgens wordt het samengevoegde bestand omgezet naar een csv bestand, zodat werken met de dataset sneller
         gaat.""")
-    
-    st.write(laadpalen.head())
         
     ######################################################################################
     # Plot crikeldiagram brandstof omschrijving
     ######################################################################################
     
-#     st.write("""
-#         ## Cirkel diagram van het type aandrijving
-#         Deze cirkel diagram laat zien welke soort aandrijving het meest is voorgekomen. 
-#         Zo is te zien dat benzine aangedreven auto's het meeste voorkomen over de jaren heen. 
-#         Hierop volgen de elektrisch auto's en de diesel auto's. Verder is te zien dat er nog een aantal kleine groepen 
-#         zijn met een ander type krachtbron die in kleine hoeveelheden voorkomen.""")
+    st.write("""
+        ## Cirkel diagram van het type aandrijving
+        Deze cirkel diagram laat zien welke soort aandrijving het meest is voorgekomen. 
+        Zo is te zien dat benzine aangedreven auto's het meeste voorkomen over de jaren heen. 
+        Hierop volgen de elektrisch auto's en de diesel auto's. Verder is te zien dat er nog een aantal kleine groepen 
+        zijn met een ander type krachtbron die in kleine hoeveelheden voorkomen.""")
     
     df_cirkel = pd.read_csv('df_cirkel.csv')
     
